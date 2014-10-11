@@ -3,26 +3,32 @@
  *	author: Nathaniel Foster
  *	description:  A simple tic tac toe game written for Hacker School
  */
-var ticTacToe = (function() {
+var ticTacToe = (function(window, document) {
 	var INIT_CELL_COLOR = "",
+		CLASS_CURRENT_PLAYER = "player-current",
 		INIT_CELL_VALUE = 0,
 		SIZE = 3,
 		NUM_CELLS = 9;
 
-	function player (color, elem) {
+	function player (elemId, id) {
+		var elem = document.getElementById(elemId);
+
 		return {
 			class: {
-				name: elem.className,
-				add: function () {
-					this.name += " " + "test";
-					console.log(this);
+				add: function (strClass) {
+					elem.className += " " + strClass;
 				},
-				remove: function () {
-
+				remove: function (strClass) {
+					elem.className = elem.className.slice(
+						0,
+						elem.className.indexOf(strClass)
+					);
 				}
 			},
-			color: color,
-			elem: elem
+			color: getPlayerColor(elem),
+			elem: elem,
+			id: id,
+			dataValue: id
 		};
 	}
 
@@ -32,14 +38,14 @@ var ticTacToe = (function() {
 	}
 
 	window.onload = function() {
-		var p_1 							= document.getElementById("p_1"),
-				p_2 							= document.getElementById("p_2"),
+		var player1 					= player("p_1", 1),
+				player2						= player("p_2", 2),
+				player_current 		= player1,
 				elem_winner 			= document.getElementById("winner"),
 				elem_winner_text 	= document.createTextNode("Winner"),
 				elem_tie_text 		= document.getElementById("tie_text"),
 				tie_text 					= document.createTextNode("Tie! Game Over"),
 				btnNewGame 				= document.getElementById("btnNewGame"),
-				player_current 		= document.querySelector(".player-current"),
 				cells 						= document.querySelectorAll(".col"),
 				winner 						= false,
 				grid 							= [[],[],[]],
@@ -47,10 +53,6 @@ var ticTacToe = (function() {
 				len 							= cells.length,
 				row 							= 0,
 				i;
-
-		var player1 = player ("blue", p_1);
-
-		player1.class.add();
 
 		function isThreeInRow() {
 			var len = grid.length;
@@ -125,27 +127,16 @@ var ticTacToe = (function() {
 			}
 		}
 
-		function addClass (elem, strClass) {
-			elem.className += " " + strClass;
-		}
-
-		function removeClass (elem, strClass) {
-			console.log(elem.className.indexOf(strClass));
-			elem.className.slice(0, elem.className.indexOf(strClass));
-			console.log(elem);
-		}
-
 		function changePlayer () {
-			// player1.class.add();
-			if (player_current.id === "p_1") {
-				removeClass(p_1, "player-current");
-				addClass(p_2, "player-current");
-				player_current = p_2;
+			player_current.class.remove(CLASS_CURRENT_PLAYER);
+
+			if (player_current.id === 1) {
+				player2.class.add(CLASS_CURRENT_PLAYER);
+				player_current = player2;
 
 			} else {
-				removeClass(p_2, "player-current");
-				addClass(p_1, "player-current");
-				player_current = p_1;
+				player1.class.add(CLASS_CURRENT_PLAYER);
+				player_current = player1;
 			}
 		}
 
@@ -153,7 +144,7 @@ var ticTacToe = (function() {
 			return function () {
 				if (!winner) {
 						if (this.style.backgroundColor === INIT_CELL_COLOR) {
-							this.style.backgroundColor = getPlayerColor(player_current);
+							this.style.backgroundColor = player_current.color;
 							this.dataValue = player_current.dataValue;
 							moveCount++;
 							isGameOver();
@@ -165,9 +156,6 @@ var ticTacToe = (function() {
 					}
 			};
 		}
-
-		p_1.dataValue = 1;
-		p_2.dataValue = 2;
 
 		for (i = 0; i < len; i++) {
 
