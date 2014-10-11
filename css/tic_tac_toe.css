@@ -1,0 +1,64 @@
+/* tic_tac_toe.css */
+
+html, body {
+	height: 100%
+	width: 100%
+}
+
+body {
+	text-align: center;
+}
+
+.button {
+	background: rgb(255, 255, 0);
+	border: 1px solid;
+	display: block;
+	margin: auto;
+	padding: .5em 1em;
+	text-decoration: none;
+	width: 25%;
+}
+
+.players {
+	margin: 1em 0em;
+	min-height: 44px;
+}
+
+.player {
+	border: 5px solid transparent;
+	display: inline-block;
+	min-height: 44px;
+	min-width: 44px;
+	margin: 0.5em 2em;
+}
+
+.player-current {
+	border-color: rgb(0, 165, 13) !important;
+}
+
+#p_1 {
+	background-color: blue;
+}
+
+#p_2 {
+	background-color: red;
+}
+
+.row {
+	min-height: 44px;
+}
+
+.col {
+	border: 1px solid black;
+	display: inline-block;
+	line-height: 3rem;
+	min-width: 44px;
+	min-height: 44px;
+	padding: .5rem;
+}
+
+#winner {
+	color: white;
+	font-size: 1.5em;
+	margin-top: 1em;
+}
