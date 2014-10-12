@@ -50,51 +50,66 @@ var ticTacToe = (function(window, document) {
 				winner 						= false,
 				grid 							= [[],[],[]],
 				moveCount 				= 0,
-				len 							= cells.length,
 				row 							= 0,
-				i;
+				len, i;
+
+		function isThreeEqualVals (val1, val2, val3) {
+			if (val1.dataValue !== 0 && val1.dataValue === val2.dataValue &&
+					val1.dataValue === val3.dataValue ) {
+
+				return true;
+			}
+			return false;
+		}
 
 		function isThreeInRow() {
-			var len = grid.length;
+			var len = grid.length,
+				val1,
+				val2,
+				val3;
 
-			for (var i=0; i<len; i++) {
-				if (grid[i][0].dataValue !== 0 &&
-						grid[i][0].dataValue === grid[i][1].dataValue &&
-						grid[i][0].dataValue === grid[i][2].dataValue ) {
+			for (var i = 0; i < len; i++) {
+				val1 = grid[i][0];
+				val2 = grid[i][1];
+				val3 = grid[i][2];
 
-					return grid[i][0];
+				if (isThreeEqualVals(val1, val2, val3)) {
+					return val1;
 				}
 			}
 			return false;
 		}
 
 		function isThreeInCol () {
-			var len = grid.length;
+			var len = grid.length,
+				val1,
+				val2,
+				val3;
 
-			for (var i=0; i<len; i++) {
-				if (grid[0][i].dataValue !== 0 &&
-						grid[0][i].dataValue === grid[1][i].dataValue &&
-						grid[0][i].dataValue === grid[2][i].dataValue ) {
+			for (var i = 0; i < len; i++) {
+				val1 = grid[0][i];
+				val2 = grid[1][i];
+				val3 = grid[2][i];
 
-					return grid[0][i];
+				if (isThreeEqualVals(val1, val2, val3)) {
+					return val1;
 				}
 			}
 			return false;
 		}
 
 		function isThreeInDia() {
+			var topLeft 		= grid[0][0],
+				middle				= grid[1][1],
+				bottomRight 	= grid[2][2],
+				topRight 			= grid[0][2],
+				bottomLeft 		= grid[2][0];
 
-			if (grid[0][0].dataValue !== 0 &&
-					grid[0][0].dataValue === grid[1][1].dataValue &&
-					grid[0][0].dataValue === grid[2][2].dataValue ) {
+			if (isThreeEqualVals(topLeft, middle, bottomRight)) {
+				return topLeft;
 
-				return grid[0][0];
-
-			} else if (grid[0][2].dataValue !== 0 &&
-					grid[0][2].dataValue === grid[1][1].dataValue &&
-					grid[0][2].dataValue === grid[2][0].dataValue ) {
-
-				return grid[0][2];
+			} else if (isThreeEqualVals(topRight, middle, bottomLeft)) {
+				return topRight;
 			}
 
 			return false;
@@ -157,6 +172,8 @@ var ticTacToe = (function(window, document) {
 			};
 		}
 
+
+		len = cells.length;
 		for (i = 0; i < len; i++) {
 
 			cells[i].dataValue = INIT_CELL_VALUE;
