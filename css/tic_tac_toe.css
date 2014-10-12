@@ -48,7 +48,7 @@ body {
 	min-height: 44px;
 }
 
-.col {
+.cell {
 	border: 1px solid black;
 	display: inline-block;
 	line-height: 3rem;

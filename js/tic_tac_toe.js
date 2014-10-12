@@ -25,14 +25,14 @@ var ticTacToe = (function(window, document) {
 					);
 				}
 			},
-			color: getPlayerColor(elem),
+			color: getElemColor(elem),
 			elem: elem,
 			id: id,
 			dataValue: id
 		};
 	}
 
-	function getPlayerColor (playerElem) {
+	function getElemColor (playerElem) {
 		var style = window.getComputedStyle(playerElem);
 		return style.getPropertyValue("background-color");
 	}
@@ -46,7 +46,7 @@ var ticTacToe = (function(window, document) {
 				elem_tie_text 		= document.getElementById("tie_text"),
 				tie_text 					= document.createTextNode("Tie! Game Over"),
 				btnNewGame 				= document.getElementById("btnNewGame"),
-				cells 						= document.querySelectorAll(".col"),
+				cells 						= document.querySelectorAll(".cell"),
 				winner 						= false,
 				grid 							= [[],[],[]],
 				moveCount 				= 0,
