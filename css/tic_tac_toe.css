@@ -35,7 +35,8 @@ body {
 	margin: auto;
 	padding: .5em 1em;
 	text-decoration: none;
-	width: 25%;
+	min-width: 5rem;
+	max-width: 25%;
 }
 
 .radio-toolbar input[type="radio"] {
