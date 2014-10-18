@@ -10,7 +10,7 @@ var ticTacToe = (function(window, document) {
 		SIZE = 3,
 		NUM_CELLS = 9;
 
-	function player (elemId, id) {
+	function player (elemId, id, isComputer) {
 		var elem = document.getElementById(elemId);
 
 		return {
@@ -28,6 +28,7 @@ var ticTacToe = (function(window, document) {
 			color: getElemColor(elem),
 			elem: elem,
 			id: id,
+			isComputer: isComputer,
 			dataValue: id
 		};
 	}
@@ -38,8 +39,8 @@ var ticTacToe = (function(window, document) {
 	}
 
 	window.onload = function() {
-		var player1 					= player("p_1", 1),
-				player2						= player("p_2", 2),
+		var player1 					= player("p_1", 1, false),
+				player2						= player("p_2", 2, true),
 				playerCurrent 		= player1,
 				elemWinner 				= document.getElementById("winner"),
 				elemTieText 			= document.getElementById("tie_text"),
@@ -142,7 +143,7 @@ var ticTacToe = (function(window, document) {
 			}
 		}
 
-		function gameReset () {
+		function resetGame () {
 			var len = cells.length,
 				i;
 
@@ -157,7 +158,7 @@ var ticTacToe = (function(window, document) {
 			moveCount = 0;
 		}
 
-		function gameInit () {
+		function initGame () {
 			len = cells.length;
 			for (i = 0; i < len; i++) {
 
@@ -172,6 +173,25 @@ var ticTacToe = (function(window, document) {
 			}
 		}
 
+		function moveComputer () {
+			var cell,
+				randomCellIndex,
+				cellsTried = [];
+			for (var i = 0, l = cells.length; i < l; i++) {
+				randomCellIndex = Math.floor((Math.random() * (l - 1)) + 1);
+
+				if (cellsTried.indexOf(randomCellIndex) === -1) {
+					cell = cells[randomCellIndex];
+					cellsTried.push(randomCellIndex);
+
+					if (cell.dataValue === INIT_CELL_VALUE) {
+						clickCell(cell)();
+						return;
+					}
+				}
+			}
+		}
+
 		function changePlayer () {
 			playerCurrent.class.remove(CLASS_CURRENT_PLAYER);
 
@@ -179,31 +199,42 @@ var ticTacToe = (function(window, document) {
 				player2.class.add(CLASS_CURRENT_PLAYER);
 				playerCurrent = player2;
 
+				console.log(player2);
+				if (player2.isComputer) {
+					moveComputer();
+				}
+
 			} else {
 				player1.class.add(CLASS_CURRENT_PLAYER);
 				playerCurrent = player1;
 			}
 		}
 
-		function clickCell () {
+		function clickCell (cell) {
 			return function () {
-				if (!winner) {
-						if (this.style.backgroundColor === INIT_CELL_COLOR) {
-							this.style.backgroundColor = playerCurrent.color;
-							this.dataValue = playerCurrent.dataValue;
-							moveCount++;
-							isGameOver();
-							changePlayer();
-						}
+				var elem = cell ? cell : this;
 
-					} else {
-						alert("Start a new game");
+				console.log(elem);
+
+				if (!winner) {
+					if (elem.dataValue === INIT_CELL_VALUE) {
+						elem.style.backgroundColor = playerCurrent.color;
+						elem.dataValue = playerCurrent.dataValue;
+						moveCount++;
+						isGameOver();
+						changePlayer();
 					}
+
+				} else {
+					if (confirm("Start a new game?")) {
+						resetGame();
+					}
+				}
 			};
 		}
 
-		gameInit();
+		initGame();
 
-		btnNewGame.onclick = gameReset;
+		btnNewGame.onclick = resetGame;
 	};
 })(window, document);
