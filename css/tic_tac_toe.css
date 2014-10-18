@@ -3,10 +3,13 @@
 html, body {
 	height: 100%
 	width: 100%
+	padding: 0;
+	margin: 0;
 }
 
 body {
 	text-align: center;
+	background: rgb(45,45,45);
 }
 
 .button {
@@ -49,7 +52,12 @@ body {
 }
 
 .cell {
-	border: 1px solid black;
+	border: 2px solid rgb(0, 0, 0);
+	border-color:
+		rgba(255, 255, 255, 0.5)
+		rgba(10, 10, 10, 0.5)
+		rgba(10, 10, 10, 0.5)
+		rgba(255, 255, 255, 0.5);
 	display: inline-block;
 	line-height: 3rem;
 	min-width: 44px;
