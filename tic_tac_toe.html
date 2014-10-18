@@ -3,30 +3,47 @@
 	<link rel="stylesheet" href="css/tic_tac_toe.css" type="text/css">
 </head>
 <body>
-	<div class="controls">
-		<a href="#" class="button" id="btnNewGame">New Game</a>
+	<div id="content">
+		<div class="controls">
+			<div class="radio-toolbar">
+
+				<input type="radio" name="gameType" id="humanVsHuman" checked="true"/>
+				<label for="humanVsHuman" class="radioLabel button">
+					Human vs. Human
+				</label>
+
+				<input type="radio" name="gameType" id="humanVsComputer">
+				<label for="humanVsComputer" class="radioLabel button">
+					Human vs. Computer
+				</label>
+			</div>
+
+
+			<a href="#" class="button" id="btnNewGame">New Game</a>
+		</div>
+		<div class="players">
+			<div id="p_1" class="player player-current">1</div>
+			<div id="p_2" class="player">2</div>
+		</div>
+		<div class="row">
+			<div id="c_0_0" class="cell"></div>
+			<div id="c_0_1" class="cell"></div>
+			<div id="c_0_2" class="cell"></div>
+		</div>
+		<div class="row">
+			<div id="c_1_0" class="cell"></div>
+			<div id="c_1_1" class="cell"></div>
+			<div id="c_1_2" class="cell"></div>
+		</div>
+		<div class="row">
+			<div id="c_2_0" class="cell"></div>
+			<div id="c_2_1" class="cell"></div>
+			<div id="c_2_2" class="cell"></div>
+		</div>
+		<div id="winner"></div>
+		<span id="tie_text"></span>
 	</div>
-	<div class="players">
-		<div id="p_1" class="player player-current">1</div>
-		<div id="p_2" class="player">2</div>
-	</div>
-	<div class="row">
-		<div id="c_0_0" class="cell"></div>
-		<div id="c_0_1" class="cell"></div>
-		<div id="c_0_2" class="cell"></div>
-	</div>
-	<div class="row">
-		<div id="c_1_0" class="cell"></div>
-		<div id="c_1_1" class="cell"></div>
-		<div id="c_1_2" class="cell"></div>
-	</div>
-	<div class="row">
-		<div id="c_2_0" class="cell"></div>
-		<div id="c_2_1" class="cell"></div>
-		<div id="c_2_2" class="cell"></div>
-	</div>
-	<div id="winner"></div>
-	<span id="tie_text"></span>
+
 <script src="js/tic_tac_toe.js" ></script>
 
 </body>
