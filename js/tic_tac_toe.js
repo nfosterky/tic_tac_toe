@@ -25,6 +25,9 @@ var ticTacToe = (function(window, document) {
 					);
 				}
 			},
+			setComputer: function() {
+				this.isComputer = true;
+			},
 			color: getElemColor(elem),
 			elem: elem,
 			id: id,
@@ -45,12 +48,25 @@ var ticTacToe = (function(window, document) {
 				elemWinner 				= document.getElementById("winner"),
 				elemTieText 			= document.getElementById("tie_text"),
 				btnNewGame 				= document.getElementById("btnNewGame"),
+				gameTypes					= document.getElementsByName("gameType"),
 				cells 						= document.querySelectorAll(".cell"),
 				winner 						= false,
 				grid 							= [[],[],[]],
 				moveCount 				= 0,
 				row 							= 0,
 				len, i;
+
+		function getGameType() {
+	    var radios = document.getElementsByName("gameType");
+
+	    for (var i = 0; i < radios.length; i++) {
+	      if (radios[i].checked) {
+	        return radios[i].value;
+	      }
+	    }
+
+	    return null;
+		}
 
 		function isThreeEqualVals (val1, val2, val3) {
 			if (val1.dataValue !== 0 && val1.dataValue === val2.dataValue &&
@@ -143,36 +159,6 @@ var ticTacToe = (function(window, document) {
 			}
 		}
 
-		function resetGame () {
-			var len = cells.length,
-				i;
-
-			for (i = 0; i < len; i++) {
-				cells[i].style.backgroundColor = INIT_CELL_COLOR;
-				cells[i].dataValue = INIT_CELL_VALUE;
-			}
-
-			elemWinner.innerHTML = "";
-			elemTieText.innerHTML = "";
-			winner = false;
-			moveCount = 0;
-		}
-
-		function initGame () {
-			len = cells.length;
-			for (i = 0; i < len; i++) {
-
-				cells[i].dataValue = INIT_CELL_VALUE;
-				cells[i].onclick = clickCell();
-
-				grid[row].push(cells[i]);
-
-				if (grid[row].length > SIZE - 1) {
-					row++;
-				}
-			}
-		}
-
 		function moveComputer () {
 			var cell,
 				randomCellIndex,
@@ -199,8 +185,7 @@ var ticTacToe = (function(window, document) {
 				player2.class.add(CLASS_CURRENT_PLAYER);
 				playerCurrent = player2;
 
-				console.log(player2);
-				if (player2.isComputer) {
+				if (getGameType() == 2) {
 					moveComputer();
 				}
 
@@ -213,8 +198,6 @@ var ticTacToe = (function(window, document) {
 		function clickCell (cell) {
 			return function () {
 				var elem = cell ? cell : this;
-
-				console.log(elem);
 
 				if (!winner) {
 					if (elem.dataValue === INIT_CELL_VALUE) {
@@ -233,8 +216,58 @@ var ticTacToe = (function(window, document) {
 			};
 		}
 
+		function clickRadio () {
+			return function () {
+				resetGame();
+			};
+		}
+
+		function resetGame () {
+			var len = cells.length,
+				i;
+
+			console.log(playerCurrent);
+			if (playerCurrent.dataValue === 2) {
+				changePlayer();
+			}
+
+			for (i = 0; i < len; i++) {
+				cells[i].style.backgroundColor = INIT_CELL_COLOR;
+				cells[i].dataValue = INIT_CELL_VALUE;
+			}
+
+			elemWinner.innerHTML = "";
+			elemTieText.innerHTML = "";
+			winner = false;
+			moveCount = 0;
+		}
+
+		function initGame () {
+			var radios = document.getElementsByName("gameType"),
+				len = cells.length,
+				i;
+
+			for (i = 0; i < len; i++) {
+				cells[i].dataValue = INIT_CELL_VALUE;
+				cells[i].onclick = clickCell();
+
+				grid[row].push(cells[i]);
+
+				if (grid[row].length > SIZE - 1) {
+					row++;
+				}
+			}
+
+			for (i = 0; i < radios.length; i++) {
+				radios[i].onclick = clickRadio();
+			}
+
+		}
+
+
 		initGame();
 
 		btnNewGame.onclick = resetGame;
 	};
+
 })(window, document);
