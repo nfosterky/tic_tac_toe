@@ -6,7 +6,7 @@
 	<div id="content">
 		<div class="controls">
 			<div class="radio-toolbar">
-				Choose Your Opponent: 
+				<div>Choose Your Opponent:</div>
 				<input type="radio" name="gameType" id="humanVsHuman" value="1"
 						checked="true" />
 
@@ -20,28 +20,30 @@
 				</label>
 			</div>
 
-
 			<a href="#" class="button" id="btnNewGame">New Game</a>
 		</div>
 		<div class="players">
 			<div id="p_1" class="player player-current">1</div>
+			<div id="grid">
+				<div class="row">
+					<div id="c_0_0" class="cell"></div>
+					<div id="c_0_1" class="cell"></div>
+					<div id="c_0_2" class="cell"></div>
+				</div>
+				<div class="row">
+					<div id="c_1_0" class="cell"></div>
+					<div id="c_1_1" class="cell"></div>
+					<div id="c_1_2" class="cell"></div>
+				</div>
+				<div class="row">
+					<div id="c_2_0" class="cell"></div>
+					<div id="c_2_1" class="cell"></div>
+					<div id="c_2_2" class="cell"></div>
+				</div>
+			</div>
 			<div id="p_2" class="player">2</div>
 		</div>
-		<div class="row">
-			<div id="c_0_0" class="cell"></div>
-			<div id="c_0_1" class="cell"></div>
-			<div id="c_0_2" class="cell"></div>
-		</div>
-		<div class="row">
-			<div id="c_1_0" class="cell"></div>
-			<div id="c_1_1" class="cell"></div>
-			<div id="c_1_2" class="cell"></div>
-		</div>
-		<div class="row">
-			<div id="c_2_0" class="cell"></div>
-			<div id="c_2_1" class="cell"></div>
-			<div id="c_2_2" class="cell"></div>
-		</div>
+
 		<div id="winner"></div>
 		<span id="tie_text"></span>
 	</div>
