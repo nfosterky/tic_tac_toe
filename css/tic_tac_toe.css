@@ -9,8 +9,9 @@ html, body {
 
 body {
 	color: white;
-	text-align: center;
 	background: rgb(45,45,45);
+	text-align: center;
+	font-family: sans-serif;
 }
 
 #content {
@@ -63,8 +64,8 @@ body {
 }
 
 .player {
-	border: 5px solid transparent;
 	display: inline-block;
+	padding: 2px;
 	min-height: 44px;
 	min-width: 44px;
 	margin: 0.5em 2em;
@@ -72,7 +73,7 @@ body {
 }
 
 .player-current {
-	border-color: rgb(0, 165, 13) !important;
+	box-shadow: 0 0px 5px rgba(255, 175, 255, 0.8);
 }
 
 #p_1 {
