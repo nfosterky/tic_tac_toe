@@ -44,7 +44,7 @@ var ticTacToe = (function(window, document) {
 	window.onload = function() {
 		var player1 					= player("p_1", 1, false),
 				player2						= player("p_2", 2, true),
-				playerCurrent 		= player1,
+				currentPlayer 		= player1,
 				elemWinner 				= document.getElementById("winner"),
 				elemTieText 			= document.getElementById("tie_text"),
 				btnNewGame 				= document.getElementById("btnNewGame"),
@@ -121,7 +121,7 @@ var ticTacToe = (function(window, document) {
 				var len = cells.length,
 					i;
 
-				if (playerCurrent.dataValue === 2) {
+				if (currentPlayer.dataValue === 2) {
 					changePlayer();
 				}
 
@@ -219,11 +219,11 @@ var ticTacToe = (function(window, document) {
 		}
 
 		function changePlayer () {
-			playerCurrent.class.remove(CLASS_CURRENT_PLAYER);
+			currentPlayer.class.remove(CLASS_CURRENT_PLAYER);
 
-			if (playerCurrent.id === 1) {
+			if (currentPlayer.id === 1) {
 				player2.class.add(CLASS_CURRENT_PLAYER);
-				playerCurrent = player2;
+				currentPlayer = player2;
 
 				if (game.getType() == 2) {
 					moveComputer();
@@ -231,7 +231,7 @@ var ticTacToe = (function(window, document) {
 
 			} else {
 				player1.class.add(CLASS_CURRENT_PLAYER);
-				playerCurrent = player1;
+				currentPlayer = player1;
 			}
 		}
 
@@ -241,8 +241,8 @@ var ticTacToe = (function(window, document) {
 
 				if (!winner) {
 					if (elem.dataValue === INIT_CELL_VALUE) {
-						elem.style.backgroundColor = playerCurrent.color;
-						elem.dataValue = playerCurrent.dataValue;
+						elem.style.backgroundColor = currentPlayer.color;
+						elem.dataValue = currentPlayer.dataValue;
 						moveCount++;
 						game.isOver();
 						changePlayer();
