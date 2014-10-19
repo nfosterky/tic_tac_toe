@@ -6,6 +6,7 @@
 var ticTacToe = (function(window, document) {
 	var INIT_CELL_COLOR = "",
 		CLASS_CURRENT_PLAYER = "player-current",
+		OPPONENT_COMPUTER = 2,
 		INIT_CELL_VALUE = 0,
 		SIZE = 3,
 		NUM_CELLS = 9;
@@ -199,16 +200,41 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
-		function moveComputer () {
+		function findBestMove () {
+			var cell;
+
+			for (var i = 0, l = cells.length; i < l; i++) {
+				cell = cells[i];
+
+
+				if (cell.dataValue === INIT_CELL_VALUE) {
+					cell.dataValue = player1.dataValue;
+
+					if (isThreeInRow() || isThreeInCol() || isThreeInDia()) {
+						cell.dataValue = INIT_CELL_VALUE;
+						clickCell(cell)();
+						return;
+
+					} else {
+						cell.dataValue = INIT_CELL_VALUE;
+					}
+
+				}
+			}
+			findRandomCell();
+		}
+
+		function findRandomCell () {
 			var cell,
 				randomCellIndex,
 				cellsTried = [];
+
 			for (var i = 0, l = cells.length; i < l; i++) {
 				randomCellIndex = Math.floor((Math.random() * (l - 1)) + 1);
 
 				if (cellsTried.indexOf(randomCellIndex) === -1) {
-					cell = cells[randomCellIndex];
 					cellsTried.push(randomCellIndex);
+					cell = cells[randomCellIndex];
 
 					if (cell.dataValue === INIT_CELL_VALUE) {
 						clickCell(cell)();
@@ -216,6 +242,11 @@ var ticTacToe = (function(window, document) {
 					}
 				}
 			}
+
+		}
+
+		function moveComputer () {
+			findBestMove();
 		}
 
 		function changePlayer () {
@@ -225,7 +256,7 @@ var ticTacToe = (function(window, document) {
 				player2.class.add(CLASS_CURRENT_PLAYER);
 				currentPlayer = player2;
 
-				if (game.getType() == 2) {
+				if (game.getType() == OPPONENT_COMPUTER) {
 					moveComputer();
 				}
 
@@ -240,6 +271,7 @@ var ticTacToe = (function(window, document) {
 				var elem = cell ? cell : this;
 
 				if (!winner) {
+
 					if (elem.dataValue === INIT_CELL_VALUE) {
 						elem.style.backgroundColor = currentPlayer.color;
 						elem.dataValue = currentPlayer.dataValue;
@@ -248,10 +280,8 @@ var ticTacToe = (function(window, document) {
 						changePlayer();
 					}
 
-				} else {
-					if (confirm("Start a new game?")) {
-						game.reset();
-					}
+				} else if (confirm("Start a new game?")) {
+					game.reset();
 				}
 			};
 		}
