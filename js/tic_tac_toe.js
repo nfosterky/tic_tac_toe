@@ -56,17 +56,86 @@ var ticTacToe = (function(window, document) {
 				row 							= 0,
 				len, i;
 
-		function getGameType() {
-	    var radios = document.getElementsByName("gameType");
+		var game = {
+			init: function () {
+				var radios = document.getElementsByName("gameType"),
+					len = cells.length,
+					i;
 
-	    for (var i = 0; i < radios.length; i++) {
-	      if (radios[i].checked) {
-	        return radios[i].value;
-	      }
-	    }
+				for (i = 0; i < len; i++) {
+					cells[i].dataValue = INIT_CELL_VALUE;
+					cells[i].onclick = clickCell();
 
-	    return null;
-		}
+					grid[row].push(cells[i]);
+
+					if (grid[row].length > SIZE - 1) {
+						row++;
+					}
+				}
+
+				for (i = 0; i < radios.length; i++) {
+					radios[i].onclick = clickRadio();
+				}
+
+			},
+			isOver: function () {
+				var elemWinnerText 	= document.createTextNode("Winner"),
+					tieText 					= document.createTextNode("Tie! Game Over"),
+					threeInRow 				= isThreeInRow(),
+					threeInCol 				= isThreeInCol(),
+					threeInDia 				= isThreeInDia(),
+					elem = {};
+
+				if (threeInRow || threeInCol || threeInDia) {
+
+					if (threeInRow) {
+						winner = threeInRow;
+
+					} else if (threeInCol) {
+						winner = threeInCol;
+
+					} else if (threeInDia) {
+						winner = threeInDia;
+					}
+
+					elem = winner.cloneNode(true);
+					elem.appendChild(elemWinnerText);
+					elemWinner.appendChild(elem);
+
+				} else if (moveCount === NUM_CELLS) {
+					elemTieText.appendChild(tieText);
+				}
+			},
+			getType: function () {
+				var radios = document.getElementsByName("gameType");
+
+				for (var i = 0; i < radios.length; i++) {
+					if (radios[i].checked) {
+						return radios[i].value;
+					}
+				}
+
+				return null;
+			},
+			reset: function () {
+				var len = cells.length,
+					i;
+
+				if (playerCurrent.dataValue === 2) {
+					changePlayer();
+				}
+
+				for (i = 0; i < len; i++) {
+					cells[i].style.backgroundColor = INIT_CELL_COLOR;
+					cells[i].dataValue = INIT_CELL_VALUE;
+				}
+
+				elemWinner.innerHTML = "";
+				elemTieText.innerHTML = "";
+				winner = false;
+				moveCount = 0;
+			},
+		};
 
 		function isThreeEqualVals (val1, val2, val3) {
 			if (val1.dataValue !== 0 && val1.dataValue === val2.dataValue &&
@@ -130,35 +199,6 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
-		function isGameOver() {
-			var elemWinnerText 	= document.createTextNode("Winner"),
-				tieText 					= document.createTextNode("Tie! Game Over"),
-				threeInRow 				= isThreeInRow(),
-				threeInCol 				= isThreeInCol(),
-				threeInDia 				= isThreeInDia(),
-				elem = {};
-
-			if (threeInRow || threeInCol || threeInDia) {
-
-				if (threeInRow) {
-					winner = threeInRow;
-
-				} else if (threeInCol) {
-					winner = threeInCol;
-
-				} else if (threeInDia) {
-					winner = threeInDia;
-				}
-
-				elem = winner.cloneNode(true);
-				elem.appendChild(elemWinnerText);
-				elemWinner.appendChild(elem);
-
-			} else if (moveCount === NUM_CELLS) {
-				elemTieText.appendChild(tieText);
-			}
-		}
-
 		function moveComputer () {
 			var cell,
 				randomCellIndex,
@@ -185,7 +225,7 @@ var ticTacToe = (function(window, document) {
 				player2.class.add(CLASS_CURRENT_PLAYER);
 				playerCurrent = player2;
 
-				if (getGameType() == 2) {
+				if (game.getType() == 2) {
 					moveComputer();
 				}
 
@@ -204,13 +244,13 @@ var ticTacToe = (function(window, document) {
 						elem.style.backgroundColor = playerCurrent.color;
 						elem.dataValue = playerCurrent.dataValue;
 						moveCount++;
-						isGameOver();
+						game.isOver();
 						changePlayer();
 					}
 
 				} else {
 					if (confirm("Start a new game?")) {
-						resetGame();
+						game.reset();
 					}
 				}
 			};
@@ -218,56 +258,13 @@ var ticTacToe = (function(window, document) {
 
 		function clickRadio () {
 			return function () {
-				resetGame();
+				game.reset();
 			};
 		}
 
-		function resetGame () {
-			var len = cells.length,
-				i;
+		game.init();
 
-			console.log(playerCurrent);
-			if (playerCurrent.dataValue === 2) {
-				changePlayer();
-			}
-
-			for (i = 0; i < len; i++) {
-				cells[i].style.backgroundColor = INIT_CELL_COLOR;
-				cells[i].dataValue = INIT_CELL_VALUE;
-			}
-
-			elemWinner.innerHTML = "";
-			elemTieText.innerHTML = "";
-			winner = false;
-			moveCount = 0;
-		}
-
-		function initGame () {
-			var radios = document.getElementsByName("gameType"),
-				len = cells.length,
-				i;
-
-			for (i = 0; i < len; i++) {
-				cells[i].dataValue = INIT_CELL_VALUE;
-				cells[i].onclick = clickCell();
-
-				grid[row].push(cells[i]);
-
-				if (grid[row].length > SIZE - 1) {
-					row++;
-				}
-			}
-
-			for (i = 0; i < radios.length; i++) {
-				radios[i].onclick = clickRadio();
-			}
-
-		}
-
-
-		initGame();
-
-		btnNewGame.onclick = resetGame;
+		btnNewGame.onclick = game.reset;
 	};
 
 })(window, document);
