@@ -11,32 +11,6 @@ var ticTacToe = (function(window, document) {
 		SIZE = 3,
 		NUM_CELLS = 9;
 
-	function player (elemId, id, isComputer) {
-		var elem = document.getElementById(elemId);
-
-		return {
-			class: {
-				add: function (strClass) {
-					elem.className += " " + strClass;
-				},
-				remove: function (strClass) {
-					elem.className = elem.className.slice(
-						0,
-						elem.className.indexOf(strClass)
-					);
-				}
-			},
-			setComputer: function() {
-				this.isComputer = true;
-			},
-			color: getElemColor(elem),
-			elem: elem,
-			id: id,
-			isComputer: isComputer,
-			dataValue: id
-		};
-	}
-
 	function getElemColor (playerElem) {
 		var style = window.getComputedStyle(playerElem);
 		return style.getPropertyValue("background-color");
@@ -138,6 +112,52 @@ var ticTacToe = (function(window, document) {
 			},
 		};
 
+		function player (elemId, id, isComputer) {
+			var elem = document.getElementById(elemId);
+
+			return {
+				class: {
+					add: function (strClass) {
+						elem.className += " " + strClass;
+					},
+					remove: function (strClass) {
+						elem.className = elem.className.slice(
+							0,
+							elem.className.indexOf(strClass)
+						);
+					}
+				},
+				checkForWinningMove: function () {
+					var cell;
+
+					for (var i = 0, l = cells.length; i < l; i++) {
+						cell = cells[i];
+
+						if (cell.dataValue === INIT_CELL_VALUE) {
+							cell.dataValue = this.dataValue;
+
+							if (isThreeInRow() || isThreeInCol() || isThreeInDia()) {
+								cell.dataValue = INIT_CELL_VALUE;
+								return cell;
+
+							} else {
+								cell.dataValue = INIT_CELL_VALUE;
+							}
+						}
+					}
+					return false;
+				},
+				setComputer: function() {
+					this.isComputer = true;
+				},
+				color: getElemColor(elem),
+				elem: elem,
+				id: id,
+				isComputer: isComputer,
+				dataValue: id
+			};
+		}
+
 		function isThreeEqualVals (val1, val2, val3) {
 			if (val1.dataValue !== 0 && val1.dataValue === val2.dataValue &&
 					val1.dataValue === val3.dataValue ) {
@@ -200,30 +220,6 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
-		function findBestMove () {
-			var cell;
-
-			for (var i = 0, l = cells.length; i < l; i++) {
-				cell = cells[i];
-
-
-				if (cell.dataValue === INIT_CELL_VALUE) {
-					cell.dataValue = player1.dataValue;
-
-					if (isThreeInRow() || isThreeInCol() || isThreeInDia()) {
-						cell.dataValue = INIT_CELL_VALUE;
-						clickCell(cell)();
-						return;
-
-					} else {
-						cell.dataValue = INIT_CELL_VALUE;
-					}
-
-				}
-			}
-			findRandomCell();
-		}
-
 		function findRandomCell () {
 			var cell,
 				randomCellIndex,
@@ -237,16 +233,29 @@ var ticTacToe = (function(window, document) {
 					cell = cells[randomCellIndex];
 
 					if (cell.dataValue === INIT_CELL_VALUE) {
-						clickCell(cell)();
-						return;
+						return cell;
 					}
 				}
 			}
-
+			return false;
 		}
 
 		function moveComputer () {
-			findBestMove();
+			var cell = player2.checkForWinningMove();
+
+			if (cell) {
+				clickCell(cell)();
+				return;
+			}
+
+			cell = player1.checkForWinningMove();
+			if (cell) {
+				clickCell(cell)();
+				return;
+			}
+
+			cell = findRandomCell();
+			clickCell(cell)();
 		}
 
 		function changePlayer () {
