@@ -20,68 +20,27 @@ body {
 	padding: 2rem 0;
 }
 
-#grid {
-	display: inline-block;
-}
-
-.button {
-	border: 1px solid black;
-	border-color:
-		rgba(255, 255, 255, 0.1)
-		rgba(10, 10, 10, 0.5)
-		rgba(10, 10, 10, 0.5)
-		rgba(255, 255, 255, 0.1);
-	color: white;
-	display: block;
-	margin: auto;
-	padding: .5em 1em;
-	text-decoration: none;
-	min-width: 5rem;
-	max-width: 25%;
-}
-
 .radio-toolbar input[type="radio"] {
-    display:none;
+	display:none;
 }
 
 .radio-toolbar label {
-    display:inline-block;
-		margin: 0.5rem 0;
+	display:inline-block;
 }
 
 .radio-toolbar input[type="radio"]:checked + label {
-  background-color: rgba(0, 0, 0, 0.4);
+	background-color: rgba(0, 0, 0, 0.4);
 	border-color:
 		rgba(10, 10, 10, 0.5)
-		rgba(255, 255, 255, 0.1)
-		rgba(255, 255, 255, 0.1)
+		rgba(255, 255, 255, 0.2)
+		rgba(255, 255, 255, 0.2)
 		rgba(10, 10, 10, 0.5);
 }
 
-.players {
-	margin: 1em 0em;
-	min-height: 44px;
-}
-
-.player {
+#grid {
 	display: inline-block;
-	padding: 2px;
-	min-height: 44px;
-	min-width: 44px;
-	margin: 0.5em 2em;
-	vertical-align: top;
-}
-
-.player-current {
-	box-shadow: 0 0px 5px rgba(255, 175, 255, 0.8);
-}
-
-#p_1 {
-	background-color: rgb(0, 0, 70);
-}
-
-#p_2 {
-	background-color: rgb(70, 0, 0);
+	vertical-align: middle;
+	margin: 1rem;
 }
 
 .row {
@@ -102,7 +61,52 @@ body {
 	padding: .5rem;
 }
 
+.player {
+	display: inline-block;
+	min-height: 44px;
+	min-width: 44px;
+	padding: 2px;
+	vertical-align: middle;
+}
+
+.player-current {
+	box-shadow: 0 0px 5px rgba(255, 255, 255, 0.8);
+}
+
+#p_1 {
+	background-color: rgb(0, 0, 70);
+}
+
+#p_2 {
+	background-color: rgb(70, 0, 0);
+}
+
+.button {
+	border: 1px solid black;
+	border-color:
+		rgba(255, 255, 255, 0.1)
+		rgba(10, 10, 10, 0.5)
+		rgba(10, 10, 10, 0.5)
+		rgba(255, 255, 255, 0.1);
+	color: white;
+	display: inline-block;
+	margin: 0.5rem 0;
+	max-width: 25%;
+	min-width: 5rem;
+	padding: .5em 1em;
+	text-decoration: none;
+}
+
+.button:active {
+	background-color: rgba(0, 0, 0, 0.4);
+	border-color:
+		rgba(10, 10, 10, 0.5)
+		rgba(255, 255, 255, 0.2)
+		rgba(255, 255, 255, 0.2)
+		rgba(10, 10, 10, 0.5);
+}
+
 #winner {
 	font-size: 1.5em;
-	margin-top: 1em;
+	margin-top: 0.5em;
 }
