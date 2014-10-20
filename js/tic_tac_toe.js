@@ -7,10 +7,11 @@ var ticTacToe = (function(window, document) {
 	var INIT_CELL_COLOR = "",
 		CLASS_CURRENT_PLAYER = "player-current",
 		OPPONENT_COMPUTER = 2,
-		INIT_CELL_VALUE = 0,
+		DEFAULT_VALUE = 0,
 		SIZE = 3,
 		NUM_CELLS = 9;
 
+	// used by player constructor to determine player color
 	function getElemColor (playerElem) {
 		var style = window.getComputedStyle(playerElem);
 		return style.getPropertyValue("background-color");
@@ -32,13 +33,15 @@ var ticTacToe = (function(window, document) {
 				len, i;
 
 		var game = {
+
+			// setup grid and initial cell values
 			init: function () {
 				var radios = document.getElementsByName("gameType"),
 					len = cells.length,
 					i;
 
 				for (i = 0; i < len; i++) {
-					cells[i].dataValue = INIT_CELL_VALUE;
+					cells[i].dataValue = DEFAULT_VALUE;
 					cells[i].onclick = clickCell();
 
 					grid[row].push(cells[i]);
@@ -51,8 +54,9 @@ var ticTacToe = (function(window, document) {
 				for (i = 0; i < radios.length; i++) {
 					radios[i].onclick = clickRadio();
 				}
-
 			},
+
+			// check if either player has won or if the game has ended in tie.
 			isOver: function () {
 				var elemWinnerText 	= document.createTextNode("Winner"),
 					tieText 					= document.createTextNode("Tie! Game Over"),
@@ -73,6 +77,7 @@ var ticTacToe = (function(window, document) {
 						winner = threeInDia;
 					}
 
+					// winner is one of the grid cells, clone and add winner text
 					elem = winner.cloneNode(true);
 					elem.appendChild(elemWinnerText);
 					elemWinner.appendChild(elem);
@@ -81,6 +86,8 @@ var ticTacToe = (function(window, document) {
 					elemTieText.appendChild(tieText);
 				}
 			},
+
+			// either human-vs-human or human-vs-computer
 			getType: function () {
 				var radios = document.getElementsByName("gameType");
 
@@ -92,30 +99,41 @@ var ticTacToe = (function(window, document) {
 
 				return null;
 			},
+
+			// called by new game button and when game type is changed
 			reset: function () {
 				var len = cells.length,
 					i;
 
-				if (currentPlayer.dataValue === 2) {
-					changePlayer();
-				}
-
 				for (i = 0; i < len; i++) {
 					cells[i].style.backgroundColor = INIT_CELL_COLOR;
-					cells[i].dataValue = INIT_CELL_VALUE;
+					cells[i].dataValue = DEFAULT_VALUE;
 				}
 
 				elemWinner.innerHTML = "";
 				elemTieText.innerHTML = "";
 				winner = false;
 				moveCount = 0;
+
+				/*
+				 *	if opponent is computer && computer's turn
+				 *	then have computer make first move
+				 */
+				if (currentPlayer.dataValue === 2 &&
+						game.getType() == OPPONENT_COMPUTER) {
+
+					moveComputer();
+				}
 			},
 		};
 
-		function player (elemId, id, isComputer) {
+		// player constructor
+		function player (elemId, id) {
 			var elem = document.getElementById(elemId);
 
 			return {
+
+				// used to add highlighting current player
 				class: {
 					add: function (strClass) {
 						elem.className += " " + strClass;
@@ -127,33 +145,33 @@ var ticTacToe = (function(window, document) {
 						);
 					}
 				},
+
+				// used by computer to find best move
 				checkForWinningMove: function () {
 					var cell;
 
+					// loop through cells to check if selecting cell will cause win
 					for (var i = 0, l = cells.length; i < l; i++) {
 						cell = cells[i];
 
-						if (cell.dataValue === INIT_CELL_VALUE) {
+						if (cell.dataValue === DEFAULT_VALUE) {
 							cell.dataValue = this.dataValue;
 
 							if (isThreeInRow() || isThreeInCol() || isThreeInDia()) {
-								cell.dataValue = INIT_CELL_VALUE;
+								cell.dataValue = DEFAULT_VALUE;
 								return cell;
 
 							} else {
-								cell.dataValue = INIT_CELL_VALUE;
+								cell.dataValue = DEFAULT_VALUE;
 							}
 						}
 					}
+
 					return false;
-				},
-				setComputer: function() {
-					this.isComputer = true;
 				},
 				color: getElemColor(elem),
 				elem: elem,
 				id: id,
-				isComputer: isComputer,
 				dataValue: id
 			};
 		}
@@ -232,7 +250,7 @@ var ticTacToe = (function(window, document) {
 					cellsTried.push(randomCellIndex);
 					cell = cells[randomCellIndex];
 
-					if (cell.dataValue === INIT_CELL_VALUE) {
+					if (cell.dataValue === DEFAULT_VALUE) {
 						return cell;
 					}
 				}
@@ -281,7 +299,7 @@ var ticTacToe = (function(window, document) {
 
 				if (!winner) {
 
-					if (elem.dataValue === INIT_CELL_VALUE) {
+					if (elem.dataValue === DEFAULT_VALUE) {
 						elem.style.backgroundColor = currentPlayer.color;
 						elem.dataValue = currentPlayer.dataValue;
 						moveCount++;
