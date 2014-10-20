@@ -185,6 +185,7 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
+		// check horizontal values
 		function isThreeInRow() {
 			var len = grid.length,
 				val1,
@@ -203,6 +204,7 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
+		// check vertical values
 		function isThreeInCol () {
 			var len = grid.length,
 				val1,
@@ -221,6 +223,7 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
+		// check diagonal values
 		function isThreeInDia() {
 			var topLeft 		= grid[0][0],
 				middle				= grid[1][1],
@@ -238,6 +241,7 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
+		// used by moveComputer() to find random cell when there is no better choice
 		function findRandomCell () {
 			var cell,
 				randomCellIndex,
@@ -246,6 +250,7 @@ var ticTacToe = (function(window, document) {
 			for (var i = 0, l = cells.length; i < l; i++) {
 				randomCellIndex = Math.floor((Math.random() * (l - 1)) + 1);
 
+				// only check if cell is available once
 				if (cellsTried.indexOf(randomCellIndex) === -1) {
 					cellsTried.push(randomCellIndex);
 					cell = cells[randomCellIndex];
@@ -258,6 +263,7 @@ var ticTacToe = (function(window, document) {
 			return false;
 		}
 
+		// select cell for computer
 		function moveComputer () {
 			var cell = player2.checkForWinningMove();
 
@@ -293,8 +299,11 @@ var ticTacToe = (function(window, document) {
 			}
 		}
 
+		// returns a function that can be called to select cell
 		function clickCell (cell) {
 			return function () {
+
+				// this === cell when a cell is physically clicked
 				var elem = cell ? cell : this;
 
 				if (!winner) {
@@ -313,6 +322,7 @@ var ticTacToe = (function(window, document) {
 			};
 		}
 
+		// called when opponent type is changed
 		function clickRadio () {
 			return function () {
 				game.reset();
