@@ -18,8 +18,8 @@ var ticTacToe = (function(window, document) {
 	}
 
 	window.onload = function() {
-		var player1 					= player("p_1", 1, false),
-				player2						= player("p_2", 2, true),
+		var player1 					= player("p_1", 1),
+				player2						= player("p_2", 2),
 				currentPlayer 		= player1,
 				elemWinner 				= document.getElementById("winner"),
 				elemTieText 			= document.getElementById("tie_text"),
@@ -176,6 +176,7 @@ var ticTacToe = (function(window, document) {
 			};
 		}
 
+		// check if three values are equal
 		function isThreeEqualVals (val1, val2, val3) {
 			if (val1.dataValue !== 0 && val1.dataValue === val2.dataValue &&
 					val1.dataValue === val3.dataValue ) {
@@ -186,7 +187,7 @@ var ticTacToe = (function(window, document) {
 		}
 
 		// check horizontal values
-		function isThreeInRow() {
+		function isThreeInRow () {
 			var len = grid.length,
 				val1,
 				val2,
@@ -224,7 +225,7 @@ var ticTacToe = (function(window, document) {
 		}
 
 		// check diagonal values
-		function isThreeInDia() {
+		function isThreeInDia () {
 			var topLeft 		= grid[0][0],
 				middle				= grid[1][1],
 				bottomRight 	= grid[2][2],
