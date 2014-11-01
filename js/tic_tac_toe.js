@@ -132,8 +132,12 @@ var ticTacToe = (function(window, document) {
 			var elem = document.getElementById(elemId);
 
 			return {
+				color: getElemColor(elem),
+				dataValue: id,
+				elem: elem,
+				id: id,
 
-				// used to add highlighting current player
+				// used to add current player highlighting
 				class: {
 					add: function (strClass) {
 						elem.className += " " + strClass;
@@ -168,11 +172,7 @@ var ticTacToe = (function(window, document) {
 					}
 
 					return false;
-				},
-				color: getElemColor(elem),
-				elem: elem,
-				id: id,
-				dataValue: id
+				}
 			};
 		}
 
